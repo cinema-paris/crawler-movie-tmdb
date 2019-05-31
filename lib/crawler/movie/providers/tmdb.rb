@@ -2,6 +2,7 @@ require 'crawler/movie/providers/tmdb/configuration'
 require 'crawler/movie'
 require 'faraday'
 require 'json'
+require 'active_support/core_ext/object/blank'
 require 'date'
 
 module Crawler
@@ -36,7 +37,7 @@ module Crawler
                 original_title: movie['original_title'],
                 genres: movie['genre_ids'],
                 overview: movie['overview'],
-                release_date: movie['release_date'] && Date.parse(movie['release_date'])
+                release_date: movie['release_date'].present? && Date.parse(movie['release_date'])
               }
             end
 
