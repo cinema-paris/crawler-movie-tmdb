@@ -31,12 +31,12 @@ module Crawler
                 id: movie['id'],
                 source: 'the-movie-database',
                 title: movie['title'],
-                poster_url: "https://image.tmdb.org/t/p/original#{movie['poster_path']}",
-                backdrop_url: "https://image.tmdb.org/t/p/original#{movie['backdrop_path']}",
-                original_language: movie['original_language'],
-                original_title: movie['original_title'],
+                poster_url: movie['poster_path'].present? && "https://image.tmdb.org/t/p/original#{movie['poster_path']}",
+                backdrop_url: movie['backdrop_path'].present? && "https://image.tmdb.org/t/p/original#{movie['backdrop_path']}",
+                original_languages: movie['original_language'].present? ? [movie['original_language']] : [],
+                original_title: movie['original_title'].presence,
                 genres: movie['genre_ids'],
-                overview: movie['overview'],
+                overview: movie['overview'].presence,
                 release_date: movie['release_date'].present? && Date.parse(movie['release_date'])
               }
             end
