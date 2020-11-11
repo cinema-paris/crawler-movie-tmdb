@@ -2,7 +2,7 @@ module Crawler
   module Movie
     module Providers
       module Tmdb
-        VERSION = '0.3.1'
+        VERSION = '1.0.0'
       end
     end
   end
