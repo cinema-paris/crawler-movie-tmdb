@@ -1,22 +1,19 @@
-require 'active_support/core_ext/module/attribute_accessors'
+require 'crawler/configuration'
 
 module Crawler
   module Movie
     module Providers
       module Tmdb
-        mattr_accessor :api_key
+        include Crawler::Configuration
 
-        mattr_accessor :region
-        @@region = 'FR'
+        class Configuration
+          attr_accessor :api_key, :region, :language, :include_adult
 
-        mattr_accessor :language
-        @@language = 'fr-FR'
-
-        mattr_accessor :include_adult
-        @@include_adult = false
-
-        def self.configure
-          yield self
+          def initialize
+            self.region = 'FR'
+            self.language = 'language'
+            self.include_adult = false
+          end
         end
       end
     end

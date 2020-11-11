@@ -1,9 +1,9 @@
+require 'active_support/core_ext/object/blank'
 require 'crawler/movie/providers/tmdb/configuration'
 require 'crawler/movie'
+require 'date'
 require 'faraday'
 require 'json'
-require 'active_support/core_ext/object/blank'
-require 'date'
 
 module Crawler
   module Movie
