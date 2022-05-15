@@ -15,12 +15,12 @@ module Crawler
 
           loop do
             response = Faraday.get('https://api.themoviedb.org/3/search/movie',
-              api_key: api_key,
-              language: language,
+              api_key: config.api_key,
+              language: config.language,
               query: query,
               page: current_page,
-              include_adult: include_adult,
-              region: region
+              include_adult: config.include_adult,
+              region: config.region
             )
 
             break if !response.success? || !response.body

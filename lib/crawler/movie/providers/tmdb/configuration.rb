@@ -11,7 +11,7 @@ module Crawler
 
           def initialize
             self.region = 'FR'
-            self.language = 'language'
+            self.language = 'fr-FR'
             self.include_adult = false
           end
         end
