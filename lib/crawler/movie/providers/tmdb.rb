@@ -9,12 +9,17 @@ module Crawler
   module Movie
     module Providers
       module Tmdb
+        include Crawler::Api
+
+        API_URL = 'https://api.themoviedb.org'
+        CDN_URL = 'https://image.tmdb.org'
+
         def self.search(query)
           movies = []
           current_page = 1
 
           loop do
-            response = Faraday.get('https://api.themoviedb.org/3/search/movie',
+            response = connection.get('/3/search/movie',
               api_key: config.api_key,
               language: config.language,
               query: query,
@@ -25,14 +30,13 @@ module Crawler
 
             break if !response.success? || !response.body
 
-            json = JSON.parse(response.body)
-            results = json['results'].map do |movie|
+            results = response.body['results'].map do |movie|
               {
                 id: movie['id'],
                 source: 'the-movie-database',
                 title: movie['title'],
-                poster_url: movie['poster_path'].presence && "https://image.tmdb.org/t/p/original#{movie['poster_path']}",
-                backdrop_url: movie['backdrop_path'].presence && "https://image.tmdb.org/t/p/original#{movie['backdrop_path']}",
+                poster_url: movie['poster_path'].presence && "#{CDN_URL}/t/p/original#{movie['poster_path']}",
+                backdrop_url: movie['backdrop_path'].presence && "#{CDN_URL}/t/p/original#{movie['backdrop_path']}",
                 original_languages: movie['original_language'].present? ? [movie['original_language']] : [],
                 original_title: movie['original_title'].presence,
                 genres: movie['genre_ids'],
@@ -43,7 +47,7 @@ module Crawler
 
             movies.concat(results)
 
-            break if current_page >= json['total_pages']
+            break if current_page >= response.body['total_pages']
 
             current_page += 1
           end
